@@ -1,0 +1,61 @@
+extends layout
+block content
+  div(class="container" id="Cool" ng-app="ciis")
+     h2#header("property"="pValue") Users
+     div
+        a(href="/users/add") Add User
+     h3 Response
+      div.response
+      div.dataloading
+     table.table(ng-controller="TodoController")
+      thead
+        tr
+          th #
+          th Name
+          th Email
+          th Action
+      tbody(class='tableMsg')
+        tr(ng-repeat="todo in todos" id="id-{{todo.st_code}}")
+          th(scope='row') {{ todo.st_code }}
+          td {{ todo.name }}
+          td {{ todo.email }}
+          td 
+            span(class='dlloading-{{todo.st_code}}')
+            button(ng-click="deleteData(todo.st_code)" class='btn btn-danger dlbtn-{{todo.st_code}}') delete
+            &nbsp;&nbsp;| &nbsp;&nbsp;
+            a(href="/users/update/{{todo.st_code}}" class="btn btn-info fa fa-pencil") Edit
+
+  script(type="text/javascript").
+   var data=!{JSON.stringify(dataGet)};
+   
+     $(".dataloading").html('loading......');
+      $(".dataloading").show();
+   if(data != ""){
+     $(".dataloading").hide();
+   var ciis = angular.module("ciis", []);
+   ciis.controller("TodoController", function($scope, $http) {
+
+     $scope.todos = !{JSON.stringify(dataGet)};
+
+     $scope.deleteData = function($id){
+        var request = $http.delete('/users/delete/'+$id);
+        $(".dlloading"+$id).html('loading......');
+        $(".dlbtn"+$id).hide();
+        request.success(function (data) {
+          console.log(data);
+      	  if(data.status == 1){
+             $("#id-"+$id).hide('slow', function(){ $(this).remove(); });
+             $(".dlloading"+$id).hide();
+             $(".dlbtn"+$id).show();
+           }
+        });
+        request.error(function(serverResponse, status, headers, config) {
+           alert("failure");
+        });
+     };
+   });
+   }else{
+    
+      $(".tableMsg").show('slow', function(){ $(this).addClass('alert alert-warning').html('no records found'); });
+      $(".dataloading").hide();
+   }

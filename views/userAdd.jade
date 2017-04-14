@@ -1,0 +1,24 @@
+extends layout
+block content
+  div(class="container" id="Cool" ng-app="ciis" ng-controller="formController")
+     h2= title 
+     h2(style="color:red")=userAdd_empty
+     a(href="/users/index") Home 
+     &nbsp;&nbsp;|&nbsp;&nbsp;
+     a(href="/users/add") Add User 
+     
+     form(method='post', action='/users/addUser')
+        input(type='text', name='st_code', class="form-control", value='', placeholder='st_code' ng-model="st_code")
+        input(type='text', name='fullname', class="form-control" , value='', placeholder='fullname' ng-model="fullname")
+        input(type='text', name='email', class="form-control" , value='', placeholder='email' ng-model="email")
+        input(type='text', name='parent_name', class="form-control" , value='', placeholder='parent_name' ng-model="parent_name")
+        input(type='text', name='parent_tel', class="form-control" , value='', placeholder='parent_tel' ng-model="parent_tel")
+        input(type='text', name='parent_address', class="form-control" , value='', placeholder='parent_address' ng-model="parent_address")
+        input(type='text', name='parent_email', class="form-control" , value='', placeholder='parent_email' ng-model="parent_email")
+        input(type='submit', value=title, class="btn btn-info", ng-bind="btname")
+script(type="text/javascript").
+   var ciis = angular.module("ciis", []);
+     ciis.controller("formController", function($scope) {
+     //  $scope.btname = "Save";
+       
+     });
